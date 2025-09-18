@@ -3,24 +3,24 @@ package mixlogic;
 import java.io.*;
 import java.util.ArrayList;
 
-public class WavGenerator extends ByteHelperMethods {
+public class WavFileGenerator extends HelperMethods {
 	
-	public static short NUMCHANNELS;
-	public static int SAMPLERATE;
-	public static int NUMSAMPLES;
-	public static int BITSPERSAMPLE;
-	public static int SUBCHUNK1SIZE;
+	public short NUMCHANNELS;
+	public int SAMPLERATE;
+	public int NUMSAMPLES;
+	public int BITSPERSAMPLE;
+	public int SUBCHUNK1SIZE;
 	
-	public static int BYTERATE;
-	public static int SUBCHUNK2SIZE;
-	public static int CHUNKSIZE;
-	public static short BLOCKALIGN;
+	public int BYTERATE;
+	public int SUBCHUNK2SIZE;
+	public int CHUNKSIZE;
+	public short BLOCKALIGN;
 	
 	private static ArrayList<Integer> data = new ArrayList<Integer>();
 	
-	public WavGenerator() {};
+	public WavFileGenerator() {};
 	
-	private static void buildHeaderInfo() {
+	private void buildHeaderInfo() {
 		NUMCHANNELS = 1;   // Mono=1, Stereo=2, and so on
 		SAMPLERATE = 44100;
 		NUMSAMPLES = data.size();
@@ -54,7 +54,7 @@ public class WavGenerator extends ByteHelperMethods {
 			new byte[] {0x57, 0x41, 0x56, 0x45}, // "WAVE" in big-endian										Format
 			
 			/* fmt Subchunk */
-			new byte[] {0x66, 0x6d, 0x74, 0x20}, // 															SubChunk1ID
+			new byte[] {0x66, 0x6d, 0x74, 0x20}, // " fmt" in big-endian													SubChunk1ID
 			intToBytesLE(SUBCHUNK1SIZE), //																		Subchunk1Size
 			BEtoLE( PadBytesBE(new byte[] {0x01}, 2)), // PCM = 1 (Values beside 1 indicate compression) 		AudioFormat
 			shortToBytesLE(NUMCHANNELS), //																		NumChannels
@@ -74,7 +74,5 @@ public class WavGenerator extends ByteHelperMethods {
 		
 		s.close();
 	}
-	
-	
-	
+
 }
